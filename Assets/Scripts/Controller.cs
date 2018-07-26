@@ -16,7 +16,7 @@ public class Controller : MonoBehaviour
         StartCoroutine(ConnectServer());
         socket.On("USER_CONNECTED", OnUserConnected);
         socket.On("PLAY", OnUserPlay);
-        socket.On("LISTWAITING", getListWaiting);
+       
         socket.On("MOVE", onUserMove);
         socket.On("USER_DISCONNECTED", OnUserDisConnected);
         joyStick.gameObject.SetActive(false);
@@ -51,9 +51,8 @@ public class Controller : MonoBehaviour
             data["name"] = loginPanel.inputField.text;
             Vector2 position = new Vector2(0, 0);
             data["position"] = position.x + "," + position.y;
-            socket.Emit("JOINROOM", new JSONObject(data));
-            socket.Emit("PLAY", new JSONObject(data));
-        
+            // socket.Emit("PLAY", new JSONObject(data));
+            socket.Emit("GETUSER", new JSONObject(data));
         }
         else
         {
@@ -105,10 +104,7 @@ public class Controller : MonoBehaviour
         joyStick.playerObject = player;
     }
 
-    void getListWaiting(SocketIOEvent data)
-    {
-        Debug.Log(data);
-    }
+   
 
     IEnumerator ConnectServer()
     {
