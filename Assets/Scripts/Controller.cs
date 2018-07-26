@@ -10,21 +10,20 @@ public class Controller : MonoBehaviour
     public JoyStickController joyStick;
     public SocketIOComponent socket;
     public Player playGameobj;
- 
+    public GameObject Player2;
     void Start()
     {
         StartCoroutine(ConnectServer());
         socket.On("USER_CONNECTED", OnUserConnected);
         socket.On("PLAY", OnUserPlay);
+        socket.On("LISTWAITING", getListWaiting);
         socket.On("MOVE", onUserMove);
         socket.On("USER_DISCONNECTED", OnUserDisConnected);
         joyStick.gameObject.SetActive(false);
         loginPanel.playBtn.onClick.AddListener(OnClickPlayBtn);
         joyStick.onCommanMove += OnCommandMove;
     }
-
     
-
     void OnCommandMove(Vector2 vec2)
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -35,8 +34,12 @@ public class Controller : MonoBehaviour
 
     void onUserMove(SocketIOEvent obj)
     {
-        GameObject player = GameObject.Find(JsonToString(obj.data.GetField("name").ToString(), "\" ")) as GameObject;
-        player.transform.position = JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\""));
+        Debug.Log("GEt the message server: " + obj + "user connected");
+        Debug.Log("Position enemy: " + JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\"")));
+     //   GameObject player = GameObject.Find(JsonToString(obj.data.GetField("name").ToString(), "\" ")) as GameObject;
+        //player.transform.position = JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\""));
+        Player2.transform.position = JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\""));
+        Debug.Log("name move: "+ obj.data.GetField("name").ToString());
     }
 
     void OnClickPlayBtn()
@@ -83,12 +86,13 @@ public class Controller : MonoBehaviour
         GameObject otherPlayer = GameObject.Instantiate(playGameobj.gameObject, playGameobj.position, Quaternion.identity) as GameObject;
         Player otherPlayCom = otherPlayer.GetComponent<Player>();
         otherPlayCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
-        otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
-        otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
+      //  otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
+       // otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
+        Player2 = otherPlayer;
+        Debug.Log("position Player2 : " + Player2.transform.position);
     }
     private void OnUserPlay(SocketIOEvent evt)
     {
-        
         Debug.Log("GEt the message server: " + evt + "userplay");
         loginPanel.gameObject.SetActive(false);
         joyStick.gameObject.SetActive(true);
@@ -98,10 +102,12 @@ public class Controller : MonoBehaviour
         Player playerCom = player.GetComponent<Player>();
         
         playerCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
-       // playerCom.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));       
-       // playerCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
-        
         joyStick.playerObject = player;
+    }
+
+    void getListWaiting(SocketIOEvent data)
+    {
+        Debug.Log(data);
     }
 
     IEnumerator ConnectServer()
