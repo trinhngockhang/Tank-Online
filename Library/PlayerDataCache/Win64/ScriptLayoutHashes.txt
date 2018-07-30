@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-E:/tank test 0.3/Tank online.exe
+E:/tank test 0.4/Tank online.exe
 SceneListBegin?
 Assets/Scenes/GamePlay.unity
 SceneListEnd?

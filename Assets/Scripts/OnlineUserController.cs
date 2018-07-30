@@ -39,6 +39,9 @@ public class OnlineUserController : MonoBehaviour {
         Vector2 position = new Vector2(0, 0);
         dataSend["position"] = position.x + "," + position.y;
         dataSend["enemyid"] = Controller.instance.idPlayer2;
+        dataSend["enemyid"] = dataSend["enemyid"].Remove(0, 1);
+        dataSend["enemyid"] = dataSend["enemyid"].Remove(dataSend["enemyid"].Length - 1, 1);
+        Debug.Log("id enemy gui len: " + dataSend["enemyid"]);
         socket.Emit("PLAY", new JSONObject(dataSend));
     }
 
@@ -89,15 +92,16 @@ public class OnlineUserController : MonoBehaviour {
 
     public void sayYes()
     {
-        
         onlineUser.gameObject.SetActive(false);
         fightPanel.gameObject.SetActive(false);
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["name"] = Controller.instance.namePlayer;
-        Vector2 position = new Vector2(0, 0);
+        Vector2 position = new Vector2(1, 3);
         data["position"] = position.x + "," + position.y;
-        data["enemyid"] = Controller.instance.idPlayer2;
+        data["enemyid"] = Controller.instance.idPlayer2;      
         socket.Emit("AGREE",new JSONObject(data["enemyid"]));
+        data["enemyid"] = data["enemyid"].Remove(0, 1);
+        data["enemyid"] = data["enemyid"].Remove(data["enemyid"].Length - 1, 1);
         socket.Emit("PLAY", new JSONObject(data));
     }
 
