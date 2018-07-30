@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnlineUser : MonoBehaviour {
 
-	// Use this for initialization
+public class OnlineUser : MonoBehaviour {
+    
 	void Start () {
-		
-	}
+        
+    }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}

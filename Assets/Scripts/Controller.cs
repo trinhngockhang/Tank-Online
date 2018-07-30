@@ -11,19 +11,29 @@ public class Controller : MonoBehaviour
     public SocketIOComponent socket;
     public Player playGameobj;
     public GameObject Player2;
+    public string namePlayer;
+    public string myId;
+    public string idPlayer2;
+    public static Controller instance;
     void Start()
     {
         StartCoroutine(ConnectServer());
         socket.On("USER_CONNECTED", OnUserConnected);
         socket.On("PLAY", OnUserPlay);
-       
+        _makeInstance();
         socket.On("MOVE", onUserMove);
         socket.On("USER_DISCONNECTED", OnUserDisConnected);
         joyStick.gameObject.SetActive(false);
         loginPanel.playBtn.onClick.AddListener(OnClickPlayBtn);
         joyStick.onCommanMove += OnCommandMove;
     }
-    
+    void _makeInstance()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     void OnCommandMove(Vector2 vec2)
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -49,8 +59,8 @@ public class Controller : MonoBehaviour
             Debug.Log("da nhan button");
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["name"] = loginPanel.inputField.text;
-            Vector2 position = new Vector2(0, 0);
-            data["position"] = position.x + "," + position.y;
+            namePlayer = loginPanel.inputField.text;
+           
             // socket.Emit("PLAY", new JSONObject(data));
             socket.Emit("GETUSER", new JSONObject(data));
         }
@@ -104,7 +114,7 @@ public class Controller : MonoBehaviour
         joyStick.playerObject = player;
     }
 
-   
+    
 
     IEnumerator ConnectServer()
     {
