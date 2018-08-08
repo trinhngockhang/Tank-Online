@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class JoyStickController : MonoBehaviour {
-    public delegate void OnMove(Vector2 vector2);
+    public delegate void OnMove(Vector2 vector2,int angle);
     public event OnMove onCommanMove;
     public WachButton Left;
     public WachButton Right;
@@ -12,14 +12,15 @@ public class JoyStickController : MonoBehaviour {
 
     [HideInInspector]
     public GameObject playerObject;
-
+    private Rigidbody2D myBody;
     public bool leftMove;
     public bool rightMove;
     public bool backMove;
     public bool frontMove;
     void Start()
     {
-       // playerObject = new GameObject();
+        // playerObject = new GameObject();
+        
     }
     public void ActionJoystick()
     {
@@ -68,37 +69,52 @@ public class JoyStickController : MonoBehaviour {
     private void Update()
     {
         Transform tranf = playerObject.transform;
+        myBody = playerObject.GetComponent<Rigidbody2D>() as Rigidbody2D; ;
         if (leftMove)
         {
-            playerObject.transform.position = new Vector2(tranf.position.x - 6f * Time.deltaTime, tranf.position.y);
+            myBody.velocity = new Vector2(-6f , 0);
+            tranf.eulerAngles = new Vector3(0, 0, 0);
+            Debug.Log(myBody.velocity + "left");
+
             if(onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position);
+                onCommanMove(playerObject.transform.position,0);
             }
         }
-        if (rightMove)
+        else if (rightMove)
         {
-            playerObject.transform.position = new Vector2(tranf.position.x + 6f * Time.deltaTime, tranf.position.y);
+            myBody.velocity = new Vector2(6f,0);
+            tranf.eulerAngles = new Vector3(0, 0, 180);
+            Debug.Log(myBody.velocity + "left");
             if (onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position);
+                onCommanMove(playerObject.transform.position,180);
             }
         }
-        if (backMove)
+        else if (backMove)
         {
-            playerObject.transform.position = new Vector2(tranf.position.x , tranf.position.y - 6f * Time.deltaTime);
+            myBody.velocity = new Vector2(0,-6f);
+            tranf.eulerAngles = new Vector3(0, 0, 90);
+            Debug.Log(myBody.velocity + "left");
             if (onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position);
+                onCommanMove(playerObject.transform.position,270);
             }
         }
-        if (frontMove)
+        else if (frontMove)
         {
-            playerObject.transform.position = new Vector2(tranf.position.x, tranf.position.y + 6f * Time.deltaTime);
+            myBody.velocity = new Vector2(0, 6f);
+            Debug.Log(myBody.velocity + "left");
+            tranf.eulerAngles = new Vector3(0, 0, 270);
             if (onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position);
+                onCommanMove(playerObject.transform.position,90);
             }
         }
+        else
+        {
+            myBody.velocity = new Vector2(0, 0);
+        }
+        
     }
 }

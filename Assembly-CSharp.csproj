@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonFight.cs" />
+    <Compile Include="Assets\Scripts\CameraCotroller.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\FightPanel.cs" />
     <Compile Include="Assets\Scripts\JoyStickController.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Assets\Scripts\OnlineUser.cs" />
     <Compile Include="Assets\Scripts\OnlineUserController.cs" />
     <Compile Include="Assets\Scripts\OtherPlayer.cs" />
+    <Compile Include="Assets\Scripts\PlayController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\User.cs" />
     <Compile Include="Assets\Scripts\WachButton.cs" />

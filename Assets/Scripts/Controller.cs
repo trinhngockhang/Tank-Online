@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     public LoginPanelController loginPanel;
     public JoyStickController joyStick;
     public SocketIOComponent socket;
+    public CameraCotroller camera;
     public Player playGameobj;
     public GameObject Player2;
     public string namePlayer;
@@ -34,11 +35,15 @@ public class Controller : MonoBehaviour
             instance = this;
         }
     }
-    void OnCommandMove(Vector2 vec2)
+    void OnCommandMove(Vector2 vec2,int angle)
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
         Vector2 position = new Vector2(vec2.x, vec2.y);
         data["position"] = position.x + "," + position.y;
+        data["angle"] = angle.ToString();
+        data["id"] = idPlayer2;
+        data["id"] = data["id"].Remove(0, 1);
+        data["id"] = data["id"].Remove(data["id"].Length - 1, 1);
         socket.Emit("MOVE", new JSONObject(data));
     }
 
@@ -49,6 +54,12 @@ public class Controller : MonoBehaviour
      //   GameObject player = GameObject.Find(JsonToString(obj.data.GetField("name").ToString(), "\" ")) as GameObject;
         //player.transform.position = JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\""));
         Player2.transform.position = JsontoVector2(JsonToString(obj.data.GetField("position").ToString(), "\""));
+        string s = obj.data.GetField("angle").ToString();
+        s = s.Remove(0, 1);
+        s = s.Remove(s.Length - 1, 1);
+        int n = int.Parse(s);
+        Debug.Log("s ne: " + s.Length);
+        Player2.transform.eulerAngles = new Vector3(0, 0, n);
         Debug.Log("name move: "+ obj.data.GetField("name").ToString());
     }
 
@@ -60,8 +71,6 @@ public class Controller : MonoBehaviour
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["name"] = loginPanel.inputField.text;
             namePlayer = loginPanel.inputField.text;
-           
-            // socket.Emit("PLAY", new JSONObject(data));
             socket.Emit("GETUSER", new JSONObject(data));
         }
         else
@@ -112,6 +121,9 @@ public class Controller : MonoBehaviour
         
         playerCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
         joyStick.playerObject = player;
+       /* camera.player = player;
+        camera.offset = camera.transform.position - player.transform.position;
+        camera.m_OrthographicCamera.orthographicSize = 1.2f; */
     }
 
     
