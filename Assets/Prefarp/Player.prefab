@@ -103,6 +103,17 @@ MonoBehaviour:
   playerName: 
   position: {x: 0, y: 0}
   id: 
+  direct: 0
+  normalbulletUp: {fileID: 114751440758471580, guid: f76315b4a86a3044a8aed3ca8c640b6f,
+    type: 2}
+  normalbulletRight: {fileID: 114074266894838964, guid: 5bb4228ae5679104b915fa553c7e14bb,
+    type: 2}
+  normalbulletDown: {fileID: 114118860372103694, guid: 3d9e1e331d0b3934ea4cad2d2dfa244b,
+    type: 2}
+  normalbulletLeft: {fileID: 114765856045581802, guid: ad3164cd144755f43b28d77169f69088,
+    type: 2}
+  fireRate: 0.5
+  enoughTime: 1
 --- !u!212 &212018098452915254
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -137,7 +148,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: a61f18d3172647d44bf435e0f63bfc48, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

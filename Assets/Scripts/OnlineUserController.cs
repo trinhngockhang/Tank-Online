@@ -16,7 +16,7 @@ public class OnlineUserController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _makeInstance();
-        socket.On("LISTWAITING", getListWaiting);
+        
         socket.On("BEFIGHT", beFight);
         socket.On("OTHERPLAYOK", otherPlayerOk);
     }
@@ -34,6 +34,7 @@ public class OnlineUserController : MonoBehaviour {
         Debug.Log("thang kia dong y r");
         fightPanel.gameObject.SetActive(false);
         onlineUser.gameObject.SetActive(false);
+        Controller.instance.firstPlayerinRoom = false;
         Dictionary<string, string> dataSend = new Dictionary<string, string>();
         dataSend["name"] = Controller.instance.namePlayer;
         Vector2 position = new Vector2(0, 0);
@@ -56,7 +57,9 @@ public class OnlineUserController : MonoBehaviour {
         newText[0].text = data.data.GetField("name").ToString();
     }
 
-    void getListWaiting(SocketIOEvent data)
+
+
+    public void getListWaiting(SocketIOEvent data)
     {
         onlineUser.gameObject.SetActive(true);
         loginPanel.gameObject.SetActive(false);
@@ -92,6 +95,8 @@ public class OnlineUserController : MonoBehaviour {
 
     public void sayYes()
     {
+
+        Controller.instance.firstPlayerinRoom = true;
         onlineUser.gameObject.SetActive(false);
         fightPanel.gameObject.SetActive(false);
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -121,4 +126,6 @@ public class OnlineUserController : MonoBehaviour {
         Debug.Log("name ne: " + rq["name"]);
         socket.Emit("SENDREQUEST", new JSONObject(rq));
     }
+
+   
 }

@@ -11,11 +11,17 @@ public class Controller : MonoBehaviour
     public SocketIOComponent socket;
     public CameraCotroller camera;
     public Player playGameobj;
+    public Player playerCom;
+    public Player otherPlayCom;
+    public bool firstPlayerinRoom;
     public GameObject Player2;
     public string namePlayer;
     public string myId;
     public string idPlayer2;
     public static Controller instance;
+    Vector2 spawnPositionFirst = new Vector2(-3, 0);
+    Vector2 spawnPositionSecond = new Vector2(5, 4);
+    Vector2 temp;
     void Start()
     {
         StartCoroutine(ConnectServer());
@@ -24,6 +30,7 @@ public class Controller : MonoBehaviour
         _makeInstance();
         socket.On("MOVE", onUserMove);
         socket.On("USER_DISCONNECTED", OnUserDisConnected);
+        socket.On("OTHERPLAYERFIRE", otherPlayerFire);
         joyStick.gameObject.SetActive(false);
         loginPanel.playBtn.onClick.AddListener(OnClickPlayBtn);
         joyStick.onCommanMove += OnCommandMove;
@@ -58,6 +65,7 @@ public class Controller : MonoBehaviour
         s = s.Remove(0, 1);
         s = s.Remove(s.Length - 1, 1);
         int n = int.Parse(s);
+        otherPlayCom.direct = n;
         Debug.Log("s ne: " + s.Length);
         Player2.transform.eulerAngles = new Vector3(0, 0, n);
         Debug.Log("name move: "+ obj.data.GetField("name").ToString());
@@ -72,6 +80,7 @@ public class Controller : MonoBehaviour
             data["name"] = loginPanel.inputField.text;
             namePlayer = loginPanel.inputField.text;
             socket.Emit("GETUSER", new JSONObject(data));
+            socket.On("LISTWAITING", OnlineUserController.instance.getListWaiting);
         }
         else
         {
@@ -98,11 +107,25 @@ public class Controller : MonoBehaviour
         Destroy(GameObject.Find(JsonToString(obj.data.GetField("name").ToString(), "\"")));
     }
 
+    private void otherPlayerFire(SocketIOEvent obj)
+    {
+        otherPlayCom.FireNormalBullet();
+    }
+
     private void OnUserConnected(SocketIOEvent evt)
     {
+        if (firstPlayerinRoom)
+        {
+            temp = spawnPositionSecond;
+        }
+        else
+        {
+            temp = spawnPositionFirst;
+        }       
         Debug.Log("GEt the message server: " + evt + "user connected") ;
-        GameObject otherPlayer = GameObject.Instantiate(playGameobj.gameObject, playGameobj.position, Quaternion.identity) as GameObject;
-        Player otherPlayCom = otherPlayer.GetComponent<Player>();
+        GameObject otherPlayer = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
+        otherPlayCom = otherPlayer.GetComponent<Player>();
+        otherPlayCom.gameObject.tag = "enemy";
         otherPlayCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
       //  otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
        // otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
@@ -111,22 +134,31 @@ public class Controller : MonoBehaviour
     }
     private void OnUserPlay(SocketIOEvent evt)
     {
+        if (!firstPlayerinRoom)
+        {
+            temp = spawnPositionSecond;
+        }
+        else
+        {
+            temp = spawnPositionFirst;
+        }
         Debug.Log("GEt the message server: " + evt + "userplay");
         loginPanel.gameObject.SetActive(false);
         joyStick.gameObject.SetActive(true);
         joyStick.ActionJoystick();
-        Vector3 test = new Vector3(3, 0, 0);
-        GameObject player = GameObject.Instantiate(playGameobj.gameObject, test, Quaternion.identity) as GameObject;
-        Player playerCom = player.GetComponent<Player>();
-        
+        GameObject player = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
+        playerCom = player.GetComponent<Player>();
         playerCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
         joyStick.playerObject = player;
-       /* camera.player = player;
-        camera.offset = camera.transform.position - player.transform.position;
-        camera.m_OrthographicCamera.orthographicSize = 1.2f; */
     }
-
-    
+    public void playerFiretoSever()
+    {
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data["enemyid"] = idPlayer2;
+        data["enemyid"] = data["enemyid"].Remove(0, 1);
+        data["enemyid"] = data["enemyid"].Remove(data["enemyid"].Length - 1, 1);
+        socket.Emit("PLAYERFIRE", new JSONObject(data));
+    }
 
     IEnumerator ConnectServer()
     {
@@ -134,10 +166,5 @@ public class Controller : MonoBehaviour
        
         socket.Emit("USER_CONNECT");
         yield return new WaitForSeconds(0.2f);
-      //  Dictionary<string, string> data = new Dictionary<string, string>(); ;
-     //   data["name"] = "khangkhang";
-     //   Vector3 temp = new Vector3(0, 3, 4);
-       // data["position"] = temp.x + "," + temp.y + "," + temp.z;
-       // socket.Emit("PLAY", new JSONObject(data));
     }
 }

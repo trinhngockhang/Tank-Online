@@ -17,6 +17,7 @@ public class JoyStickController : MonoBehaviour {
     public bool rightMove;
     public bool backMove;
     public bool frontMove;
+    public bool fire;
     void Start()
     {
         // playerObject = new GameObject();
@@ -98,7 +99,7 @@ public class JoyStickController : MonoBehaviour {
             Debug.Log(myBody.velocity + "left");
             if (onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position,270);
+                onCommanMove(playerObject.transform.position,90);
             }
         }
         else if (frontMove)
@@ -108,7 +109,7 @@ public class JoyStickController : MonoBehaviour {
             tranf.eulerAngles = new Vector3(0, 0, 270);
             if (onCommanMove != null)
             {
-                onCommanMove(playerObject.transform.position,90);
+                onCommanMove(playerObject.transform.position,270);
             }
         }
         else

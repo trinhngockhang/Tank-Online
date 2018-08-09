@@ -65,9 +65,11 @@
     <Compile Include="Assets\Scripts\CameraCotroller.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\FightPanel.cs" />
+    <Compile Include="Assets\Scripts\FireButton.cs" />
     <Compile Include="Assets\Scripts\JoyStickController.cs" />
     <Compile Include="Assets\Scripts\LoadUser.cs" />
     <Compile Include="Assets\Scripts\LoginPanelController.cs" />
+    <Compile Include="Assets\Scripts\NormalBullet.cs" />
     <Compile Include="Assets\Scripts\OnlineUser.cs" />
     <Compile Include="Assets\Scripts\OnlineUserController.cs" />
     <Compile Include="Assets\Scripts\OtherPlayer.cs" />
