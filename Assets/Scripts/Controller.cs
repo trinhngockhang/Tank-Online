@@ -125,7 +125,6 @@ public class Controller : MonoBehaviour
         Debug.Log("GEt the message server: " + evt + "user connected") ;
         GameObject otherPlayer = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
         otherPlayCom = otherPlayer.GetComponent<Player>();
-        otherPlayCom.gameObject.tag = "enemy";
         otherPlayCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
       //  otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
        // otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
@@ -149,6 +148,7 @@ public class Controller : MonoBehaviour
         GameObject player = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
         playerCom = player.GetComponent<Player>();
         playerCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
+        playerCom.setName();
         joyStick.playerObject = player;
     }
     public void playerFiretoSever()

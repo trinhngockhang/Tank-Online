@@ -129,7 +129,7 @@ dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 f16835701e71dd5d6fb1fed4b7aff1d8 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 486cd95c82d8305219c352c06b776e1f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
 7e4e613fdd98050e382376111b336557 Assembly-CSharp.dll:SocketIO.SocketIOComponent
-71b37dbc42c52e76d56cca816b0ffa87 Assembly-CSharp.dll:.Player
+71bfe1828a1e83c5e0369cfb5643bd13 Assembly-CSharp.dll:.Player
 2fabb88d69677616dbf861fabb0ec21c Assembly-CSharp.dll:.Controller
 dd8b567b00560a44e30d9f0af4aa26b3 Assembly-CSharp.dll:.OnlineUserController
 243b84047fd0f0bf6bf8e3d1d9aabe58 Assembly-CSharp.dll:.OtherPlayer

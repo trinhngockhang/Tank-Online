@@ -8,15 +8,19 @@ public class NormalBullet : MonoBehaviour {
     {
         if ( collision.gameObject.tag != "normalBullet")
         {
-            if(first)
+            if(!first)
             {
-                first = false;
-            }
-            else
-            {
+                gameObject.tag = "normalBulletReady";
                 Destroy(gameObject);
-            }
-            
+            }            
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "player")
+        {
+            first = false;
         }
     }
 }

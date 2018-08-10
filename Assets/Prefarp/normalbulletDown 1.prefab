@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 61626738315848484}
   m_Layer: 0
   m_Name: normalbulletDown 1
-  m_TagString: normalBullet
+  m_TagString: safeBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

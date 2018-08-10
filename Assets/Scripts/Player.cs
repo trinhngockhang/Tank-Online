@@ -13,9 +13,13 @@ public class Player : MonoBehaviour {
     public NormalBullet normalbulletDown;
     public NormalBullet normalbulletLeft;
     public static Player instance;
+    private float health = 100f;
     public float fireRate = 0.5F;
     private float nextFire = 0.0F;
     public bool enoughTime = true;
+    public Image healthBar;
+    public Text nameUser;
+    public Canvas info;
     private void Start()
     {
         this.name = playerName;
@@ -29,6 +33,12 @@ public class Player : MonoBehaviour {
             instance = this;
         }
     }
+
+    public void setName()
+    {
+        nameUser.text = playerName;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "player")
@@ -36,6 +46,21 @@ public class Player : MonoBehaviour {
             myBody.velocity = new Vector2(0, 0);
             Debug.Log("da cham player");
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "normalBulletReady") 
+        {
+            beFirebyNormalBulletEnemy();
+        }
+    }
+
+    public void beFirebyNormalBulletEnemy()
+    {
+        health -= 25;
+        Debug.Log(playerName + " bi dinh dan,con lai: " + health);
+        healthBar.transform.localScale = new Vector2(health / 100, 1);
     }
 
     public void FireNormalBullet()
@@ -78,6 +103,7 @@ public class Player : MonoBehaviour {
 
     private void Update()
     {
+
         if ( Time.time > nextFire)
         {
             enoughTime = true;
@@ -89,16 +115,22 @@ public class Player : MonoBehaviour {
         if (myBody.velocity.x > 0)
         {
             direct = 180;
-        }else if(myBody.velocity.x < 0)
+            info.transform.eulerAngles = new Vector3(0, 0, 180);
+        }
+        else if(myBody.velocity.x < 0)
         {
             direct = 0;
-        }else if (myBody.velocity.y > 0)
+            info.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else if (myBody.velocity.y > 0)
         {
             direct = 270;
+            info.transform.eulerAngles = new Vector3(0, 0, 90);
         }
         else if(myBody.velocity.y < 0)
         {
             direct = 90;
+            info.transform.eulerAngles = new Vector3(0, 0, 270);
         }
     }
 

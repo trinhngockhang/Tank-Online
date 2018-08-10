@@ -1154,7 +1154,7 @@ MonoBehaviour:
   joyStick: {fileID: 666987007}
   socket: {fileID: 2079355326}
   camera: {fileID: 0}
-  playGameobj: {fileID: 114279921172258226, guid: d724ec233928699449ae042d3db1c248,
+  playGameobj: {fileID: 114568199629542928, guid: 4b9957cbfb15a0c4b9fc21d032f5f415,
     type: 2}
   playerCom: {fileID: 0}
   otherPlayCom: {fileID: 0}
@@ -1676,7 +1676,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 21.2, y: 15.1}
+  m_AnchoredPosition: {x: 21.199951, y: 15.099976}
   m_SizeDelta: {x: -441.1, y: -343.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &834487717
@@ -2063,7 +2063,7 @@ Prefab:
     - target: {fileID: 224652220324100086, guid: a440db56f4dc58d43a4973539c758be7,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 21.200012
+      value: 21.199951
       objectReference: {fileID: 0}
     - target: {fileID: 224652220324100086, guid: a440db56f4dc58d43a4973539c758be7,
         type: 2}
