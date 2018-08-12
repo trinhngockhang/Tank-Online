@@ -17,9 +17,33 @@ public class Player : MonoBehaviour {
     public float fireRate = 0.5F;
     private float nextFire = 0.0F;
     public bool enoughTime = true;
-    public Image healthBar;
-    public Text nameUser;
-    public Canvas info;
+    private bool firstPlayer;
+    private Text nameUser;
+   
+    private HealthBar HealthImage;
+    
+
+    public void setName(bool first,Text textPlayer1,Text Player2,HealthBar HealthBar1,HealthBar HealthBar2)
+    {
+        Debug.Log("la ng dau toen : " + first);
+        Debug.Log("ten la " + playerName);
+        //firstPlayer = first;
+        if (first)
+        {
+            Debug.Log("da vao first la ng dau tien");
+            nameUser = textPlayer1;
+            HealthImage = HealthBar1;
+        }
+        else
+        {
+            Debug.Log("da vao day deo phai ng dau ten");
+            nameUser = Player2;
+            HealthImage = HealthBar2;
+        }
+        nameUser.text = playerName;
+        Debug.Log("ten la " + playerName);
+    }
+
     private void Start()
     {
         this.name = playerName;
@@ -33,11 +57,7 @@ public class Player : MonoBehaviour {
             instance = this;
         }
     }
-
-    public void setName()
-    {
-        nameUser.text = playerName;
-    }
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -58,9 +78,12 @@ public class Player : MonoBehaviour {
 
     public void beFirebyNormalBulletEnemy()
     {
-        health -= 25;
-        Debug.Log(playerName + " bi dinh dan,con lai: " + health);
-        healthBar.transform.localScale = new Vector2(health / 100, 1);
+        if(health > 0)
+        {
+            health -= 20;
+            Debug.Log(playerName + " bi dinh dan,con lai: " + health);
+            HealthImage.transform.localScale = new Vector2(health / 100, 1);
+        }        
     }
 
     public void FireNormalBullet()
@@ -115,22 +138,19 @@ public class Player : MonoBehaviour {
         if (myBody.velocity.x > 0)
         {
             direct = 180;
-            info.transform.eulerAngles = new Vector3(0, 0, 180);
+            
         }
         else if(myBody.velocity.x < 0)
         {
             direct = 0;
-            info.transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else if (myBody.velocity.y > 0)
         {
             direct = 270;
-            info.transform.eulerAngles = new Vector3(0, 0, 90);
         }
         else if(myBody.velocity.y < 0)
         {
             direct = 90;
-            info.transform.eulerAngles = new Vector3(0, 0, 270);
         }
     }
 

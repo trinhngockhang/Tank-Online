@@ -9,6 +9,7 @@ public class OnlineUserController : MonoBehaviour {
     public SocketIOComponent socket;
     public LoginPanelController loginPanel;
     public OnlineUser onlineUser;
+    public InfoPanel infoPanel;
     public User user;
     public FightPanel fightPanel;
     private string nameEnemy;
@@ -32,6 +33,7 @@ public class OnlineUserController : MonoBehaviour {
     void otherPlayerOk(SocketIOEvent data)
     {
         Debug.Log("thang kia dong y r");
+        infoPanel.gameObject.SetActive(true);
         fightPanel.gameObject.SetActive(false);
         onlineUser.gameObject.SetActive(false);
         Controller.instance.firstPlayerinRoom = false;
@@ -95,7 +97,7 @@ public class OnlineUserController : MonoBehaviour {
 
     public void sayYes()
     {
-
+        infoPanel.gameObject.SetActive(true);
         Controller.instance.firstPlayerinRoom = true;
         onlineUser.gameObject.SetActive(false);
         fightPanel.gameObject.SetActive(false);

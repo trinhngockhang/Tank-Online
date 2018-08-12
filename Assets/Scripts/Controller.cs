@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using SocketIO;
 using System.Text.RegularExpressions;
-
+using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     public LoginPanelController loginPanel;
     public JoyStickController joyStick;
     public SocketIOComponent socket;
+    public Text textNamePlayer1;
+    public Text textNamePlayer2;
+    public HealthBar HealthBar1;
+    public HealthBar HealthBar2;
     public CameraCotroller camera;
     public Player playGameobj;
     public Player playerCom;
@@ -126,8 +130,9 @@ public class Controller : MonoBehaviour
         GameObject otherPlayer = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
         otherPlayCom = otherPlayer.GetComponent<Player>();
         otherPlayCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
-      //  otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
-       // otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
+        //  otherPlayer.transform.position = JsontoVector2(JsonToString(evt.data.GetField("position").ToString(), "\""));
+        // otherPlayCom.id = JsonToString(evt.data.GetField("id").ToString(), "\"");
+        otherPlayCom.setName(!firstPlayerinRoom, textNamePlayer1, textNamePlayer2,HealthBar1,HealthBar2);
         Player2 = otherPlayer;
         Debug.Log("position Player2 : " + Player2.transform.position);
     }
@@ -148,8 +153,9 @@ public class Controller : MonoBehaviour
         GameObject player = GameObject.Instantiate(playGameobj.gameObject, temp, Quaternion.identity) as GameObject;
         playerCom = player.GetComponent<Player>();
         playerCom.playerName = JsonToString(evt.data.GetField("name").ToString(), "\"");
-        playerCom.setName();
+        // playerCom.setName();        
         joyStick.playerObject = player;
+        playerCom.setName(firstPlayerinRoom, textNamePlayer1, textNamePlayer2, HealthBar1, HealthBar2);
     }
     public void playerFiretoSever()
     {
