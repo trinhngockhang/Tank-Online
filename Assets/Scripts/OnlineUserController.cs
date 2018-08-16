@@ -13,7 +13,9 @@ public class OnlineUserController : MonoBehaviour {
     public User user;
     public FightPanel fightPanel;
     private string nameEnemy;
+    private int lastOnline = 0;
     private string idEnemy;
+    public Text OnlineText;
     // Use this for initialization
     void Start () {
         _makeInstance();
@@ -32,6 +34,7 @@ public class OnlineUserController : MonoBehaviour {
 
     void otherPlayerOk(SocketIOEvent data)
     {
+        Controller.instance.gaming = true;
         Debug.Log("thang kia dong y r");
         infoPanel.gameObject.SetActive(true);
         fightPanel.gameObject.SetActive(false);
@@ -50,6 +53,7 @@ public class OnlineUserController : MonoBehaviour {
 
     void beFight(SocketIOEvent data)
     {
+        Controller.instance.gaming = true;
         Controller.instance.idPlayer2 = data.data.GetField("enemyid").ToString();
         Text[] newText;
         newText = fightPanel.GetComponentsInChildren<Text>();
@@ -63,31 +67,52 @@ public class OnlineUserController : MonoBehaviour {
 
     public void getListWaiting(SocketIOEvent data)
     {
-        onlineUser.gameObject.SetActive(true);
-        loginPanel.gameObject.SetActive(false);
-        // Debug.Log("id " + socket);
-        //Debug.Log(data.data.GetField("client").ToString());
-        // string test = data.data.GetField("client")[0].GetField("name").ToString();
-        //Debug.Log(data.data.GetField("length"));
-        // Debug.Log(test);
-        Controller.instance.myId = data.data.GetField("userid").ToString();
-        Debug.Log("my id is : " + Controller.instance.myId);
-        int n = int.Parse(data.data.GetField("length").ToString());
-        int m = 0;
-        for (int i = 1;i <= n ; i++)
-         {
-             Vector2 temp = new Vector2(640, 360 - i * 120 );
-             user = Instantiate(user, temp, Quaternion.identity);
-             user.transform.parent = onlineUser.transform;
-             Text textUser = user.GetComponentInChildren(typeof(Text)) as Text;
-             string s = data.data.GetField("client")[i - 1].GetField("name").ToString();
-             idEnemy = data.data.GetField("client")[i - 1].GetField("id").ToString();
-             s = s.Remove(0, 1);
-             s = s.Remove(s.Length - 1, 1);
-            textUser.text = s;
-             ButtonFight fightButton = user.GetComponentInChildren(typeof(ButtonFight)) as ButtonFight;
-             fightButton.id = idEnemy;
-        } 
+        if(Controller.instance.gaming == false)
+        {
+            
+            onlineUser.gameObject.SetActive(true);
+            loginPanel.gameObject.SetActive(false);
+            // Debug.Log("id " + socket);
+            //Debug.Log(data.data.GetField("client").ToString());
+            // string test = data.data.GetField("client")[0].GetField("name").ToString();
+            //Debug.Log(data.data.GetField("length"));
+            // Debug.Log(test);
+            Controller.instance.myId = data.data.GetField("userid").ToString();
+            Debug.Log("my id is : " + Controller.instance.myId);
+            int n = int.Parse(data.data.GetField("length").ToString());
+            int m = 0;
+            OnlineText.text = "Online user(" + n + ")";
+            // create user online list
+            for (int i = 1; i <= n || i<= lastOnline; i++)
+            {
+                // delete old list
+                if (i - 1 < lastOnline)
+                {
+                    Debug.Log("xoa thang " + onlineUser.transform.GetChild(0).GetChild(i - 1 ).name);
+                    Destroy((onlineUser.transform.GetChild(0).GetChild(i -1 ).gameObject));
+                }
+                // Debug.Log("clear" + object.Equals(onlineUser.transform.GetChild(0).GetChild(i - 1)));
+                if (i <= n)
+                {               
+                    Vector2 temp = new Vector2(640, 360 - i * 120);
+                    User user1 = Instantiate(user, temp, Quaternion.identity);
+                    user1.transform.parent = onlineUser.transform.GetChild(0);
+                    Text textUser = user1.GetComponentInChildren(typeof(Text)) as Text;
+                    string s = data.data.GetField("client")[i - 1].GetField("name").ToString();
+                    idEnemy = data.data.GetField("client")[i - 1].GetField("id").ToString();
+                    string gaming = data.data.GetField("client")[i - 1].GetField("gaming").ToString();
+                    bool gamingBool = gaming == "true";
+                    Debug.Log("thang" + s + " " + gamingBool);
+                    s = s.Remove(0, 1);
+                    s = s.Remove(s.Length - 1, 1);
+                    textUser.text = s;
+                    ButtonFight fightButton = user1.GetComponentInChildren(typeof(ButtonFight)) as ButtonFight;
+                    fightButton.id = idEnemy;
+                }
+            }
+            lastOnline = n;
+            Debug.Log(lastOnline);
+        }       
     }
 
     public void sayNo()
@@ -97,6 +122,7 @@ public class OnlineUserController : MonoBehaviour {
 
     public void sayYes()
     {
+        Controller.instance.gaming = true;
         infoPanel.gameObject.SetActive(true);
         Controller.instance.firstPlayerinRoom = true;
         onlineUser.gameObject.SetActive(false);

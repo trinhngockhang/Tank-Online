@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
+    public GameObject Map;
+    public BackGround bg;
     public LoginPanelController loginPanel;
     public JoyStickController joyStick;
     public SocketIOComponent socket;
@@ -23,6 +25,7 @@ public class Controller : MonoBehaviour
     public string myId;
     public string idPlayer2;
     public static Controller instance;
+    public bool gaming = false;
     Vector2 spawnPositionFirst = new Vector2(-3, 0);
     Vector2 spawnPositionSecond = new Vector2(5, 4);
     Vector2 temp;
@@ -83,6 +86,7 @@ public class Controller : MonoBehaviour
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["name"] = loginPanel.inputField.text;
             namePlayer = loginPanel.inputField.text;
+            data["gaming"] = gaming.ToString();
             socket.Emit("GETUSER", new JSONObject(data));
             socket.On("LISTWAITING", OnlineUserController.instance.getListWaiting);
         }
@@ -147,6 +151,8 @@ public class Controller : MonoBehaviour
             temp = spawnPositionFirst;
         }
         Debug.Log("GEt the message server: " + evt + "userplay");
+        Map.gameObject.SetActive(true);
+        bg.gameObject.SetActive(false);
         loginPanel.gameObject.SetActive(false);
         joyStick.gameObject.SetActive(true);
         joyStick.ActionJoystick();
