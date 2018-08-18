@@ -44,6 +44,11 @@ public class Player : MonoBehaviour {
         Debug.Log("ten la " + playerName);
     }
 
+    public float getHealth()
+    {
+        return health;
+    }
+
     private void Start()
     {
         this.name = playerName;

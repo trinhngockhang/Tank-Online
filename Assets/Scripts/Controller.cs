@@ -36,6 +36,7 @@ public class Controller : MonoBehaviour
         socket.On("PLAY", OnUserPlay);
         _makeInstance();
         socket.On("MOVE", onUserMove);
+        socket.On("GETID", getMyId);
         socket.On("USER_DISCONNECTED", OnUserDisConnected);
         socket.On("OTHERPLAYERFIRE", otherPlayerFire);
         joyStick.gameObject.SetActive(false);
@@ -48,6 +49,13 @@ public class Controller : MonoBehaviour
         {
             instance = this;
         }
+    }
+    void getMyId(SocketIOEvent obj)
+    {
+        Debug.Log(obj);
+        string s = obj.data.GetField("id").ToString();
+        myId = s;
+        Debug.Log("id tu server nay: " + s);
     }
     void OnCommandMove(Vector2 vec2,int angle)
     {
@@ -142,6 +150,9 @@ public class Controller : MonoBehaviour
     }
     private void OnUserPlay(SocketIOEvent evt)
     {
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data["gaming"] = "true";
+        socket.Emit("CHANGESTATUS",new JSONObject(data));
         if (!firstPlayerinRoom)
         {
             temp = spawnPositionSecond;

@@ -19,7 +19,6 @@ public class OnlineUserController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _makeInstance();
-        
         socket.On("BEFIGHT", beFight);
         socket.On("OTHERPLAYOK", otherPlayerOk);
     }
@@ -77,8 +76,6 @@ public class OnlineUserController : MonoBehaviour {
             // string test = data.data.GetField("client")[0].GetField("name").ToString();
             //Debug.Log(data.data.GetField("length"));
             // Debug.Log(test);
-            Controller.instance.myId = data.data.GetField("userid").ToString();
-            Debug.Log("my id is : " + Controller.instance.myId);
             int n = int.Parse(data.data.GetField("length").ToString());
             int m = 0;
             OnlineText.text = "Online user(" + n + ")";
@@ -101,13 +98,26 @@ public class OnlineUserController : MonoBehaviour {
                     string s = data.data.GetField("client")[i - 1].GetField("name").ToString();
                     idEnemy = data.data.GetField("client")[i - 1].GetField("id").ToString();
                     string gaming = data.data.GetField("client")[i - 1].GetField("gaming").ToString();
-                    bool gamingBool = gaming == "true";
+                    Debug.Log("aaa" + gaming);
+                    gaming = gaming.Remove(0, 1);
+                    gaming = gaming.Remove(gaming.Length - 1, 1);
+                    bool gamingBool = (gaming == "true");
                     Debug.Log("thang" + s + " " + gamingBool);
+                    ButtonFight fightButton = user1.GetComponentInChildren(typeof(ButtonFight)) as ButtonFight;
+                    if (gamingBool)
+                    {
+                        Debug.Log("gaming la dung");
+                        Destroy(fightButton.gameObject);                       
+                    }
+                    else
+                    {
+                        GamingText img = user1.GetComponentInChildren(typeof(GamingText)) as GamingText;
+                        Destroy(img.gameObject);
+                        fightButton.id = idEnemy;
+                    }
                     s = s.Remove(0, 1);
                     s = s.Remove(s.Length - 1, 1);
-                    textUser.text = s;
-                    ButtonFight fightButton = user1.GetComponentInChildren(typeof(ButtonFight)) as ButtonFight;
-                    fightButton.id = idEnemy;
+                    textUser.text = s;                    
                 }
             }
             lastOnline = n;
