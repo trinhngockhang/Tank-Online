@@ -104,13 +104,13 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   id: 
   direct: 0
-  normalbulletUp: {fileID: 114755358172279174, guid: f76315b4a86a3044a8aed3ca8c640b6f,
+  normalbulletUp: {fileID: 114617991779209576, guid: f76315b4a86a3044a8aed3ca8c640b6f,
     type: 2}
-  normalbulletRight: {fileID: 114071447629873038, guid: 5bb4228ae5679104b915fa553c7e14bb,
+  normalbulletRight: {fileID: 114597020628393460, guid: 5bb4228ae5679104b915fa553c7e14bb,
     type: 2}
-  normalbulletDown: {fileID: 114240698744972732, guid: 3d9e1e331d0b3934ea4cad2d2dfa244b,
+  normalbulletDown: {fileID: 114044009250289602, guid: ef7b39fd5f7a9244cb027249d8359937,
     type: 2}
-  normalbulletLeft: {fileID: 114636632716047434, guid: ad3164cd144755f43b28d77169f69088,
+  normalbulletLeft: {fileID: 114409119659936014, guid: ad3164cd144755f43b28d77169f69088,
     type: 2}
   fireRate: 0.5
   enoughTime: 1

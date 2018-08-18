@@ -8,6 +8,8 @@ TagManager:
   - enemy
   - safeBullet
   - normalBulletReady
+  - redBrick
+  - grayBrick
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,15 @@ public class NormalBullet : MonoBehaviour {
     private bool first = true;
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "redBrick")
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
+        if(collision.gameObject.tag == "grayBrick")
+        {
+            Destroy(gameObject);
+        }
         if ( collision.gameObject.tag != "normalBullet")
         {
             if(!first)

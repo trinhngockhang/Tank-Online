@@ -10,4 +10,12 @@ public class FireButton : MonoBehaviour {
         b.onClick.AddListener(() => Controller.instance.playerCom.FireNormalBullet());
         b.onClick.AddListener(() => Controller.instance.playerFiretoSever());
     }
+    private void Update()
+    {
+        if (Input.GetKey("space"))
+        {
+            Controller.instance.playerCom.FireNormalBullet();
+            Controller.instance.playerFiretoSever();
+        }
+    }
 }

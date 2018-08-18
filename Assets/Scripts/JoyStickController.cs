@@ -71,7 +71,7 @@ public class JoyStickController : MonoBehaviour {
     {
         Transform tranf = playerObject.transform;
         myBody = playerObject.GetComponent<Rigidbody2D>() as Rigidbody2D; ;
-        if (leftMove)
+        if (leftMove || Input.GetKey("a"))
         {
             myBody.velocity = new Vector2(-6f , 0);
             tranf.eulerAngles = new Vector3(0, 0, 0);
@@ -82,7 +82,7 @@ public class JoyStickController : MonoBehaviour {
                 onCommanMove(playerObject.transform.position,0);
             }
         }
-        else if (rightMove)
+        else if (rightMove || Input.GetKey("d"))
         {
             myBody.velocity = new Vector2(6f,0);
             tranf.eulerAngles = new Vector3(0, 0, 180);
@@ -92,7 +92,7 @@ public class JoyStickController : MonoBehaviour {
                 onCommanMove(playerObject.transform.position,180);
             }
         }
-        else if (backMove)
+        else if (backMove || Input.GetKey("s"))
         {
             myBody.velocity = new Vector2(0,-6f);
             tranf.eulerAngles = new Vector3(0, 0, 90);
@@ -102,7 +102,7 @@ public class JoyStickController : MonoBehaviour {
                 onCommanMove(playerObject.transform.position,90);
             }
         }
-        else if (frontMove)
+        else if (frontMove || Input.GetKey("w"))
         {
             myBody.velocity = new Vector2(0, 6f);
             Debug.Log(myBody.velocity + "left");

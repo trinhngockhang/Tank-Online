@@ -27,7 +27,7 @@ public class Controller : MonoBehaviour
     public static Controller instance;
     public bool gaming = false;
     Vector2 spawnPositionFirst = new Vector2(-3, 0);
-    Vector2 spawnPositionSecond = new Vector2(5, 4);
+    Vector2 spawnPositionSecond = new Vector2(5, 1);
     Vector2 temp;
     void Start()
     {
